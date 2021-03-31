@@ -16,5 +16,5 @@ public class RoomEntity {
     String name="";
     int sex=0;
     @Ignore
-    String ignoreText = "";
+    String ignoreText = ""; 
 }
