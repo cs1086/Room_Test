@@ -3,8 +3,14 @@ package com.example.room_test;
 import android.annotation.SuppressLint;
 import android.util.Log;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -42,5 +48,26 @@ public class GithubTypeConverters {
     @TypeConverter
     public static String stringListToString(List<String> list) {
         return list.stream().collect(Collectors.joining(","));
+    }
+    @TypeConverter
+    public static Date fromTimestamp(Long value) {
+        return value == null ? null : new Date(value);
+    }
+
+    @TypeConverter
+    public static Long dateToTimestamp(Date date) {
+        return date == null ? null : date.getTime();
+    }
+
+    private static Gson gson = new Gson();
+    private static Type petListType = new TypeToken<ArrayList<Contacter>>() {}.getType();//定義json轉成物件後的型態格式
+    @TypeConverter
+    public static List<Contacter> petsFromJsonArray(String json) {
+        return gson.fromJson(json, petListType);
+    }
+
+    @TypeConverter
+    public static String petsToJsonArray(List<Contacter> pets) {
+        return gson.toJson(pets);
     }
 }
